@@ -29,25 +29,20 @@ def flatten_json(nested_json):
     flatten(nested_json)
     return out
 
-# this finds our json files
+
 path_to_json = os.getcwd() + '/Blue Energy/18/'
 json_files = [pos_json for pos_json in os.listdir(path_to_json) if pos_json.endswith('.json')]
 
-# here I define my pandas Dataframe with the columns I want to get from the json
-jsons_data = pd.DataFrame(columns=keylist)
-jsons_data.to_csv('out.csv', encoding='utf-8', index=False)
-dataframe = ''
-# we need both the json and an index number so use enumerate()
+
 recordList = []
 for index, js in enumerate(json_files):
     with open(os.path.join(path_to_json, js)) as json_file:
         json_text = flatten_json(json.load(json_file))
         recordList.append(json_text)
-print(len(recordList))
+
 
 df = pd.DataFrame(recordList)
 export = df.to_csv('out.csv')
-
 
 
 
