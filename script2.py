@@ -1,4 +1,3 @@
-import pandas as pd
 import json
 import os
 import time
@@ -40,6 +39,7 @@ for index, js in enumerate(json_files):
         recordList.append(json_text)
 
 
+
 dictionary = {}
 for record in recordList:
     dictionary.update(record)
@@ -64,25 +64,4 @@ with open("out2.csv","w+") as my_csv:
     csvWriter.writerows(arr)
 
 
-
-
-
-
-
-
-#recordList_dict = Convert(recordList)
-#
-#print(type(recordList_dict))
-#keyList = []
-#for key, value in recordList_dict:
-#    if recordList_dict[key] not in keyList:
-#        keyList.append(recordList_dict[key])
-
-
-
-
-df = pd.DataFrame(recordList)
-export = df.to_csv('out.csv')
-
 print("Process finished --- %s seconds ---" % (time.time() - start_time))
-
