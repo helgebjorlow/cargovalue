@@ -1,38 +1,35 @@
 import pandas as pd
 import json
 import os
+import time
+start_time = time.time()
 
+#function that recursively flattens json-data by calling a helper function(flatten) on each level of the json it encounters
 
+def flatten_json(json_nested):  
+    flat_json = {}
 
-def flatten_json(nested_json):
-    """
-        Flatten json object with nested keys into a single level.
-        Args:
-            nested_json: A nested json object.
-        Returns:
-            The flattened json object if successful, None otherwise.
-    """
-    out = {}
+    def flatten(unflat, text=''):
+        
+        if type(unflat) is dict:
+            for element in unflat:
+                flatten(unflat[element], text + element + '_')
+        
+        elif type(unflat) is list:
+            
+            for element in unflat:
+                flatten(element, text + '_')
+                
+        else: 
+            
+            flat_json[text] = unflat
+    flatten(json_nested)
+    return flat_json
 
-    def flatten(x, name=''):
-        if type(x) is dict:
-            for a in x:
-                flatten(x[a], name + a + ' ')
-        elif type(x) is list:
-            i = 0
-            for a in x:
-                flatten(a, name + ' ')
-                i += 1
-        else:
-            out[name[:-1]] = x
-
-    flatten(nested_json)
-    return out
 
 
 path_to_json = os.getcwd() + '/Blue Energy/18/'
 json_files = [pos_json for pos_json in os.listdir(path_to_json) if pos_json.endswith('.json')]
-
 
 recordList = []
 for index, js in enumerate(json_files):
@@ -43,6 +40,9 @@ for index, js in enumerate(json_files):
 
 df = pd.DataFrame(recordList)
 export = df.to_csv('out.csv')
+
+print("Process finished --- %s seconds ---" % (time.time() - start_time))
+
 
 
 
